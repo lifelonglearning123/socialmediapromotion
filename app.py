@@ -41,26 +41,24 @@ def summarize_text(text, max_length=30):
 
 # Streamlit app
 def main():
-    st.title('Social Media Content Generator')
-
+    st.title('Social Media')
+    content = ""    
     # User choice for input type
-    input_type = st.radio("Choose your input type:", ('Website URL', 'Direct Text'))
+    name = st.text_input("Enter your company name")
+    website_url = st.text_input("Enter the website URL to summarize:")
+    if website_url:
+        with st.spinner('Scraping website content...'):
+            content = scrape_website(website_url)
+            if not content:
+                st.error("Failed to scrape the website or the website is empty.")
 
-    content = ""
-    if input_type == 'Website URL':
-        website_url = st.text_input("Enter the website URL to summarize:")
-        if website_url:
-            with st.spinner('Scraping website content...'):
-                content = scrape_website(website_url)
-                if not content:
-                    st.error("Failed to scrape the website or the website is empty.")
-    else:
-        content = st.text_area("Enter the text to summarize:")
+    content = content + " " + st.text_area("Enter the text to summarize:")
+    print(content)
 
     if st.button('Summarize'):
         if content and content.strip():
             with st.spinner('Summarizing content...'):
-                summary = summarize_text(content, 30)
+                summary = summarize_text(content, 30) + f" {name} will be exhibiting at the Royal Highland Show"
             st.success("Summary generated successfully!")
             st.write(summary)
         else:
