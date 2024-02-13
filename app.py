@@ -41,7 +41,7 @@ def summarize_text(text, max_length=30):
 
 # Streamlit app
 def main():
-    st.title('Website Summarizer')
+    st.title('Social Media Content Generator')
 
     # User choice for input type
     input_type = st.radio("Choose your input type:", ('Website URL', 'Direct Text'))
